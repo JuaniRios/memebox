@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>memebox</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#16131f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="memebox">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><img src="/icons/icon.svg" alt="" width="28" height="28"><span>memebox</span></div>
+    <input id="search" type="search" placeholder="Search names and tags" autocomplete="off" enterkeyhint="search">
+    <button id="add-btn" class="primary" type="button">+ Add</button>
+  </header>
+
+  <nav class="filters" id="filters">
+    <button type="button" data-kind="" class="chip active">All</button>
+    <button type="button" data-kind="still" class="chip">Images</button>
+    <button type="button" data-kind="animated" class="chip">GIFs</button>
+    <button type="button" data-kind="video" class="chip">Videos</button>
+    <span class="sep"></span>
+    <div id="tag-chips" class="tag-chips"></div>
+  </nav>
+
+  <main>
+    <div id="empty" class="empty" hidden>
+      <p class="big">Your meme library is empty.</p>
+      <p>Drop images, GIFs, stickers or videos anywhere on this page, paste one with <kbd>Ctrl/⌘ V</kbd>, or tap <b>+ Add</b>.</p>
+    </div>
+    <div id="grid" class="grid"></div>
+  </main>
+
+  <div id="drop-overlay" class="drop-overlay" hidden><div>Drop to add to memebox</div></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <input id="file-input" type="file" accept="image/*,video/*,.heic,.heif,.webp,.webm" multiple hidden>
+
+  <dialog id="add-dialog" class="sheet">
+    <form method="dialog" class="sheet-head"><h2>Add memes</h2><button class="icon" aria-label="Close">✕</button></form>
+    <div class="sheet-body">
+      <button id="pick-files" type="button" class="primary wide">Choose files…</button>
+      <p class="muted">Or drop files on the page, or paste an image.</p>
+      <form id="url-form" class="row">
+        <input id="url-input" type="url" placeholder="Paste a link (GIPHY, Tenor, image or video URL)" required>
+        <button type="submit">Import</button>
+      </form>
+      <label class="field"><span>Tags for new memes</span><input id="add-tags" placeholder="e.g. cat, reaction"></label>
+    </div>
+  </dialog>
+
+  <dialog id="item-dialog" class="sheet wide-sheet">
+    <form method="dialog" class="sheet-head">
+      <input id="item-name" class="title-input" aria-label="Name">
+      <button class="icon" aria-label="Close">✕</button>
+    </form>
+    <div class="sheet-body item-layout">
+      <section class="item-media">
+        <div id="item-preview" class="checker media-box"></div>
+        <p id="item-meta" class="muted small"></p>
+        <label class="field"><span>Tags</span><input id="item-tags" placeholder="comma separated"></label>
+        <div class="row">
+          <a id="item-download" class="button" href="#">Download original</a>
+          <button id="item-delete" type="button" class="danger">Delete</button>
+        </div>
+      </section>
+
+      <section class="item-export">
+        <h3>Send as</h3>
+        <div id="preset-buttons" class="preset-grid"></div>
+
+        <div id="result" class="result" hidden>
+          <div id="result-preview" class="checker media-box small-box"></div>
+          <p id="result-info" class="small"></p>
+          <p id="result-hint" class="muted small"></p>
+          <div class="row wrap">
+            <button id="share-btn" type="button" class="primary">Share…</button>
+            <button id="copy-btn" type="button">Copy image</button>
+            <a id="download-btn" class="button" href="#">Download</a>
+            <button id="save-btn" type="button">Save as new meme</button>
+          </div>
+        </div>
+        <div id="working" class="working" hidden><span class="spinner"></span> Converting…</div>
+        <details id="options" class="options">
+          <summary>Captions, crop and trim</summary>
+          <div id="caption-fields">
+            <label class="field"><span>Top text</span><input id="opt-top" maxlength="200"></label>
+            <label class="field"><span>Bottom text</span><input id="opt-bottom" maxlength="200"></label>
+          </div>
+          <label class="field" id="fit-field"><span>Square stickers</span>
+            <select id="opt-fit"><option value="contain">Fit inside (transparent edges)</option><option value="cover">Fill and crop</option></select>
+          </label>
+          <div class="row" id="trim-fields">
+            <label class="field"><span>Start (s)</span><input id="opt-start" type="number" min="0" step="0.1" inputmode="decimal" placeholder="0"></label>
+            <label class="field"><span>Length (s)</span><input id="opt-dur" type="number" min="0" step="0.1" inputmode="decimal" placeholder="all"></label>
+          </div>
+        </details>
+
+      </section>
+    </div>
+  </dialog>
+
+  <script src="/app.js" type="module"></script>
+</body>
+</html>
